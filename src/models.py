@@ -2,6 +2,7 @@ from typing import Optional, List
 from datetime import datetime, date
 from enum import Enum
 from sqlmodel import Field, SQLModel, Relationship
+from sqlalchemy import  JSON, Column
 
 # --- ENUMS ---
 class UserRole(str, Enum):
