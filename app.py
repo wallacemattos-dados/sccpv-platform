@@ -1,16 +1,19 @@
-# src/app.py
 import sys
 import os
+
+from pathlib import Path
+
+sys.path.append(str(Path(__file__).resolve().parent))
+
+
 import streamlit as st
-
-# --- CORREÇÃO DE PATH (Necessário para rodar como script) ---
-# Adiciona a raiz do projeto ao sys.path
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-# ------------------------------------------------------------
-
 from src.ui.login import render_login
 from src.ui.pages.admin_dashboard import render_admin_dashboard
 from src.ui.pages.public_search import render_public_search
+
+import os
+print("Diretório atual:", os.getcwd())
+print("Arquivos aqui:", os.listdir())
 
 # Configuração da Página (Primeira linha Streamlit)
 st.set_page_config(page_title="SCCPV - Sistema Fipe", layout="wide")
