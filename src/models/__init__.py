@@ -1,4 +1,3 @@
-# src/models/__init__.py
 from typing import Optional, List
 from datetime import datetime, date
 from enum import Enum
@@ -22,7 +21,7 @@ class AssignmentStatus(str, Enum):
     OPEN = "open"
     COMPLETED = "completed"
 
-# --- TABELAS ---
+# --- ENTIDADES ---
 
 class User(SQLModel, table=True):
     __tablename__ = "users"
@@ -33,7 +32,6 @@ class User(SQLModel, table=True):
     role: UserRole
     is_active: bool = Field(default=True)
 
-    # Relacionamentos
     regions: List["Region"] = Relationship(back_populates="coordinator")
     assignments: List["ResearchAssignment"] = Relationship(back_populates="researcher")
     created_stores: List["Store"] = Relationship(back_populates="creator")
@@ -51,14 +49,13 @@ class Brand(SQLModel, table=True):
     __tablename__ = "brands"
     id: Optional[int] = Field(default=None, primary_key=True)
     name: str = Field(unique=True)
-
     models: List["Model"] = Relationship(back_populates="brand")
 
 class Model(SQLModel, table=True):
     __tablename__ = "models"
     id: Optional[int] = Field(default=None, primary_key=True)
     name: str
-    category: str  # Ex: SUV, Sedan
+    category: str
     brand_id: int = Field(foreign_key="brands.id")
 
     brand: Brand = Relationship(back_populates="models")
@@ -94,7 +91,6 @@ class VehicleCapture(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     assignment_id: int = Field(foreign_key="research_assignments.id")
     model_id: int = Field(foreign_key="models.id")
-    
     price: float
     model_year: int
     manufacture_year: int
@@ -107,10 +103,9 @@ class VehicleCapture(SQLModel, table=True):
 class MonthlyAverage(SQLModel, table=True):
     __tablename__ = "monthly_averages"
     id: Optional[int] = Field(default=None, primary_key=True)
-    reference_month: str  # Format: YYYY-MM
+    reference_month: str
     model_id: int = Field(foreign_key="models.id")
     model_year: int
-    
     avg_price: float
     min_price: float
     max_price: float
