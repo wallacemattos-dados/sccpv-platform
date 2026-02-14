@@ -13,7 +13,6 @@ def render_researcher_dashboard():
     catalog = CatalogService(session)
     store_service = StoreService(session) # <--- Serviço de Loja
 
-    # --- ABA EXTRA: CADASTRAR LOJA (Requisito 6) ---
     with st.expander("➕ Encontrou uma Loja Nova? Cadastre aqui."):
         with st.form("researcher_new_store"):
             st.caption("Solicite o cadastro para poder agendar visitas futuras.")
@@ -38,7 +37,6 @@ def render_researcher_dashboard():
         st.info("Nenhuma tarefa agendada para você hoje.")
         return
 
-    # ... (Resto do código igual ao anterior)
     task_options = {t.id: f"{t.store.name} - {t.week_start_date}" for t in my_tasks}
     selected_task_id = st.selectbox("📍 Visita Atual:", options=task_options.keys(), format_func=lambda x: task_options[x])
     current_task = next(t for t in my_tasks if t.id == selected_task_id)

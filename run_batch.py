@@ -10,7 +10,6 @@ def process_monthly_averages():
     
     with Session(engine) as session:
         # 1. Agrupa as capturas por Modelo e Ano
-        # SQL: SELECT model_id, model_year, AVG(price), MIN(price), MAX(price), COUNT(*) ...
         statement = (
             select(
                 VehicleCapture.model_id,
@@ -57,7 +56,7 @@ def process_monthly_averages():
                     model_id=model_id,
                     model_year=model_year,
                     avg_price=avg_val,
-                    min_val=min_val,
+                    min_price=min_val, # <--- CORRIGIDO (Era min_val)
                     max_price=max_val,
                     sample_size=count_val
                 )
