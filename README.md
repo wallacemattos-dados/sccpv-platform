@@ -1,4 +1,3 @@
-```markdown
 # 🚗 SCCPV — Sistema de Captura e Consulta de Preços de Veículos
 
 <div align="center">
@@ -20,12 +19,12 @@
 ## 📑 Índice Interativo
 
 - [🌟 Metodologia STAR](#-metodologia-star)
-- [🏗️ Decisões Arquiteturais](#️-decisões-arquiteturais)
+- [🏗️ Escolhas Arquiteturais](#%EF%B8%8F-escolha-de-arquitetura)
 - [📁 Estrutura do Projeto](#-estrutura-do-projeto)
 - [👥 Perfis de Utilizador](#-perfis-de-utilizador-e-credenciais)
-- [🧪 Guia de Demonstração](#-guia-de-demonstração-passo-a-passo)
-- [⚙️ Instalação e Execução](#️-instalação-e-execução)
-- [🚀 Roadmap · Fase 2](#-evolução-e-roadmap-fase-2)
+- [🧪 Guia de Demonstração](#-guia-de-demo-passo-a-passo)
+- [⚙️ Instalação e Execução](#%EF%B8%8F-instalação-e-execução)
+- [🚀 Roadmap · Fase 2](#-escalabilidade-e-roadmap-fase-2)
 
 ---
 
@@ -47,7 +46,7 @@
 
 ---
 
-## 🏗️ Decisões Arquiteturais
+## 🏗️ Escolha De Arquitetura
 
 Para cumprir um prazo agressivo sem comprometer a qualidade, tomámos decisões técnicas não convencionais — porém altamente eficientes.
 
@@ -74,11 +73,11 @@ PRAGMA synchronous = NORMAL;
 
 ### 3️⃣ Data Warehouse Leve · Processamento Batch
 
-| Componente          | Responsabilidade                                                                                               |
-|---------------------|----------------------------------------------------------------------------------------------------------------|
-| `VehicleCapture`    | Recolhas brutas inseridas pelos pesquisadores.                                                                 |
-| `AnalyticsService`  | **Script Batch** que consolida dados → calcula médias / mínimos / máximos → realiza *Upsert* na tabela otimizada. |
-| `MonthlyAverage`    | Tabela de leitura ultra‑rápida para as consultas públicas (estilo Tabela FIPE).                                 |
+| Componente        | Responsabilidade                                                                                               |
+|-------------------|----------------------------------------------------------------------------------------------------------------|
+| `VehicleCapture`  | Recolhas brutas inseridas pelos pesquisadores.                                                                 |
+| `AnalyticsService`| **Script Batch** que consolida dados → calcula médias / mínimos / máximos → realiza *Upsert* na tabela otimizada. |
+| `MonthlyAverage`  | Tabela de leitura ultra‑rápida para as consultas públicas (estilo Tabela FIPE).                                 |
 
 ### 4️⃣ Resiliência com API FIPE vs. Dados Mockados
 
@@ -119,64 +118,29 @@ sccpv-platform/
 > 🔐 **Palavra‑passe padrão para todos os utilizadores de teste:** `123456`  
 > *Gerado automaticamente ao executar `create_mock_data.py`.*
 
-| Perfil          | E‑mail de Teste          | Responsabilidade Principal                                                       |
-|-----------------|--------------------------|----------------------------------------------------------------------------------|
-| **Público**     | *(sem login)*            | Consulta a média de mercado de qualquer veículo.                                  |
-| **Administrador** | `admin@sccpv.com`      | Cadastro e gestão de permissões de todos os utilizadores do sistema.              |
-| **Coordenador** | `roberto@sccpv.com`      | Aprova lojas pendentes e gera a agenda de visitas para os pesquisadores.          |
-| **Pesquisador** | `ana@sccpv.com`          | Interface **Mobile‑First**. Executa recolhas de preços nas lojas agendadas.       |
-| **Gerente**     | `carlos@sccpv.com`       | Visualiza KPIs, tendências e gere o catálogo mestre (Marcas / Modelos).           |
-| **Lojista**     | `fernanda@sccpv.com`     | Solicita o registo da sua concessão / loja para ser incluída no radar do sistema. |
+| Perfil            | E‑mail de Teste          | Responsabilidade Principal                                                       |
+|-------------------|--------------------------|----------------------------------------------------------------------------------|
+| **Público**       | *(sem login)*            | Consulta a média de mercado de qualquer veículo.                                  |
+| **Administrador** | `admin@sccpv.com`        | Cadastro e gestão de permissões de todos os utilizadores do sistema.              |
+| **Coordenador**   | `roberto@sccpv.com`      | Aprova lojas pendentes e gera a agenda de visitas para os pesquisadores.          |
+| **Pesquisador**   | `ana@sccpv.com`          | Interface **Mobile‑First**. Executa recolhas de preços nas lojas agendadas.       |
+| **Gerente**       | `carlos@sccpv.com`       | Visualiza KPIs, tendências e gere o catálogo mestre (Marcas / Modelos).           |
+| **Lojista**       | `fernanda@sccpv.com`     | Solicita o registo da sua concessão / loja para ser incluída no radar do sistema. |
 
 ---
 
-## 🧪 Guia de Demonstração (Passo a Passo)
+## 🧪 Guia de Demo (Passo a Passo)
 
 Siga este guião para demonstrar **todo o fluxo de valor do sistema**:
 
-<table>
-<tr>
-<th width="5%">#</th>
-<th width="25%">Ação</th>
-<th width="70%">Detalhes</th>
-</tr>
-
-<tr>
-<td>1️⃣</td>
-<td><b>Consulta Pública Inicial</b></td>
-<td>Sem login, pesquise <i>Toyota Corolla 2023</i>. O sistema exibe a média mockada inicial.</td>
-</tr>
-
-<tr>
-<td>2️⃣</td>
-<td><b>Ação do Lojista</b></td>
-<td>Login como <code>fernanda@sccpv.com</code>. Verifique que a loja está com estado <i>Pendente</i>.</td>
-</tr>
-
-<tr>
-<td>3️⃣</td>
-<td><b>Ação do Coordenador</b></td>
-<td>Login como <code>roberto@sccpv.com</code>. No separador <i>Aprovar Lojas</i>, aprove a loja da Fernanda. Em <i>Agendas</i>, veja a atribuição da pesquisadora Ana à <i>Garagem Central</i>.</td>
-</tr>
-
-<tr>
-<td>4️⃣</td>
-<td><b>Recolha no Terreno</b></td>
-<td>Login como <code>ana@sccpv.com</code>. Visualize a visita do dia, selecione <i>Toyota Corolla</i> e insira um preço real (ex: <b>R$ 130.000,00</b>). Guarde a recolha.</td>
-</tr>
-
-<tr>
-<td>5️⃣</td>
-<td><b>Cálculo Batch · Visão Executiva</b></td>
-<td>Login como <code>admin@sccpv.com</code> (ou Gerente). Execute a função <i>Processar Médias</i>. O sistema consolida a recolha da Ana e atualiza a tabela <code>MonthlyAverage</code>.</td>
-</tr>
-
-<tr>
-<td>6️⃣</td>
-<td><b>Fecho</b></td>
-<td>Retorne à consulta pública (sem login) e pesquise novamente o <i>Corolla</i>. A <b>média de mercado foi atualizada com sucesso</b>.</td>
-</tr>
-</table>
+| #   | Ação                               | Detalhes                                                                                                                                                                                                 |
+|-----|------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 1️⃣  | **Consulta Pública Inicial**       | Sem login, pesquise *Toyota Corolla 2023*. O sistema exibe a média mockada inicial.                                                                                                                       |
+| 2️⃣  | **Ação do Lojista**                | Login como `fernanda@sccpv.com`. Verifique que a loja está com estado *Pendente*.                                                                                                                         |
+| 3️⃣  | **Ação do Coordenador**            | Login como `roberto@sccpv.com`. No separador *Aprovar Lojas*, aprove a loja da Fernanda. Em *Agendas*, veja a atribuição da pesquisadora Ana à *Garagem Central*.                                          |
+| 4️⃣  | **Recolha no Terreno**             | Login como `ana@sccpv.com`. Visualize a visita do dia, selecione *Toyota Corolla* e insira um preço real (ex: **R$ 130.000,00**). Guarde a recolha.                                                       |
+| 5️⃣  | **Cálculo Batch · Visão Executiva**| Login como `admin@sccpv.com` (ou Gerente). Execute a função *Processar Médias*. O sistema consolida a recolha da Ana e atualiza a tabela `MonthlyAverage`.                                                |
+| 6️⃣  | **Fecho**                          | Retorne à consulta pública (sem login) e pesquise novamente o *Corolla*. A **média de mercado foi atualizada com sucesso**.                                                                               |
 
 ---
 
@@ -203,7 +167,7 @@ uv run streamlit run app.py
 
 ---
 
-## 🚀 Evolução e Roadmap (Fase 2)
+## 🚀 Escalabilidade e Roadmap (Fase 2)
 
 A arquitetura foi projetada para **substituir componentes sem reescrever a lógica de negócio**.
 
@@ -211,7 +175,7 @@ A arquitetura foi projetada para **substituir componentes sem reescrever a lógi
 |--------------------------|------------------------------------------------------------------------------------------------------|
 | **Escalabilidade**       | Substituir a *string* de conexão do SQLite por **PostgreSQL**, suportando acessos massivos concorrentes. |
 | **APIs REST**            | Expor a camada `src/services` através de **FastAPI**, criando endpoints padronizados.                 |
-| **Aplicação Nativa**     | Desenvolvimento de um **app Flutter** para pesquisadores, com funcionamento **100% offline‑first**.    |
+| **Aplicação Nativa**     | Desenvolvimento de um **app React Native** para pesquisadores, com funcionamento **100% offline‑first**.    |
 | **Data Science**         | Implementação de algoritmos de **predição de desvalorização** sobre o *Data Warehouse* histórico.     |
 
 ---
@@ -226,3 +190,6 @@ A arquitetura foi projetada para **substituir componentes sem reescrever a lógi
 
 </div>
 ```
+
+---
+
